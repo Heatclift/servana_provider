@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/features/onboarding/screens/onboarding_screen1.dart';
-import 'package:tidy_cleaner_mobile/features/onboarding/screens/onboarding_screen2.dart';
-import 'package:tidy_cleaner_mobile/features/onboarding/screens/onboarding_screen3.dart';
-import 'package:tidy_cleaner_mobile/features/onboarding/screens/onboarding_screen4.dart';
-import 'package:tidy_cleaner_mobile/features/signup/signup_view.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/features/onboarding/screens/onboarding_screen1.dart';
+import 'package:servana_cleaner_mobile/features/onboarding/screens/onboarding_screen2.dart';
+import 'package:servana_cleaner_mobile/features/onboarding/screens/onboarding_screen3.dart';
+import 'package:servana_cleaner_mobile/features/onboarding/screens/onboarding_screen4.dart';
+import 'package:servana_cleaner_mobile/features/signup/signup_view.dart';
 
 class OnboardingView extends StatefulWidget {
   static String routeName = "OnboardingView";

@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/domain/services/utils.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/domain/services/utils.dart';
 
 class CalendarView extends StatefulWidget {
   static const String routeName = 'CalendarView';
@@ -16,12 +16,17 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
+  static DateTime _calendarFirstDay() => DateTime(2020, 1, 1);
+
+  static DateTime _calendarLastDay() =>
+      DateTime(DateTime.now().year + 5, 12, 31);
+
   final Map<DateTime, List<Map<String, String>>> jobEvents = {
     DateTime(2024, 10, 06): [
       {
         'status': 'ongoing',
         'clientName': 'John Doe',
-        'serviceType': 'Tidy Plus',
+        'serviceType': 'Servana Plus',
         'servicePrice': '£45',
         'date': 'Oct 06, 2024',
         'time': '10:00 AM',
@@ -29,7 +34,7 @@ class _CalendarViewState extends State<CalendarView> {
       {
         'status': 'pending',
         'clientName': 'Mary Johnson',
-        'serviceType': 'Tidy Plus',
+        'serviceType': 'Servana Plus',
         'servicePrice': '£45',
         'date': 'Oct 06, 2024',
         'time': '3:00 PM',
@@ -39,7 +44,7 @@ class _CalendarViewState extends State<CalendarView> {
       {
         'status': 'pending',
         'clientName': 'Jane Matson',
-        'serviceType': 'Tidy Basic',
+        'serviceType': 'Servana Basic',
         'servicePrice': '£30',
         'date': 'Oct 08, 2024',
         'time': '1:00 PM',
@@ -66,10 +71,19 @@ class _CalendarViewState extends State<CalendarView> {
     return DateTime(date.year, date.month, date.day);
   }
 
+  DateTime _clampToCalendarRange(DateTime day) {
+    final first = _calendarFirstDay();
+    final last = _calendarLastDay();
+    if (day.isBefore(first)) return first;
+    if (day.isAfter(last)) return last;
+    return day;
+  }
+
   @override
   void initState() {
     super.initState();
-    _selectedDay = _normalizeDate(_selectedDay);
+    _selectedDay = _clampToCalendarRange(_normalizeDate(_selectedDay));
+    _focusedDay = _clampToCalendarRange(_normalizeDate(_focusedDay));
     _selectedJobs = jobEvents[_selectedDay] ?? [];
   }
 
@@ -91,16 +105,18 @@ class _CalendarViewState extends State<CalendarView> {
       body: Column(
         children: [
           TableCalendar(
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2025, 12, 31),
+            firstDay: _calendarFirstDay(),
+            lastDay: _calendarLastDay(),
             focusedDay: _focusedDay,
             selectedDayPredicate: (day) {
               return isSameDay(day, _selectedDay);
             },
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                _selectedDay = _normalizeDate(selectedDay);
-                _focusedDay = focusedDay;
+                _selectedDay =
+                    _clampToCalendarRange(_normalizeDate(selectedDay));
+                _focusedDay =
+                    _clampToCalendarRange(_normalizeDate(focusedDay));
                 _selectedJobs = jobEvents[_selectedDay] ?? [];
               });
             },
@@ -221,20 +237,21 @@ class _CalendarViewState extends State<CalendarView> {
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
-                            'My Jobs for ${DateFormat('MMM dd yyyy').format(_focusedDay)}',
+                            'My Jobs for ${DateFormat('MMM dd yyyy').format(_selectedDay)}',
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                        ListView.builder(
-                          itemCount: _selectedJobs.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            var job = _selectedJobs[index];
-                            return _buildJobCard(job);
-                          },
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: _selectedJobs.length,
+                            itemBuilder: (context, index) {
+                              var job = _selectedJobs[index];
+                              return _buildJobCard(job);
+                            },
+                          ),
                         ),
                       ],
                     ),

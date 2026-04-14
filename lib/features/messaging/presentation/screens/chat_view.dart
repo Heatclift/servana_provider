@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
 
 class ChatView extends StatefulWidget {
   static const String routeName = 'ChatView';
@@ -24,7 +24,7 @@ class ChatViewState extends State<ChatView> {
     await Future.delayed(const Duration(milliseconds: 100));
     messages = [
       {
-        'name': 'Tidy Admin',
+        'name': 'Servana Admin',
         'photoUrl': null,
         'text': 'Hi there! How are you?',
         'isMe': false,
@@ -206,7 +206,7 @@ class ChatViewState extends State<ChatView> {
                                     ),
                                   ),
                                   Text(
-                                    '${widget.groupInfo['cleanerName']}, ${widget.groupInfo['customerName']}, Tidy Admin',
+                                    '${widget.groupInfo['cleanerName']}, ${widget.groupInfo['customerName']}, Servana Admin',
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,

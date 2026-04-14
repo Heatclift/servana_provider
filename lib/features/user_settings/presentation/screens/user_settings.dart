@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
-import 'package:tidy_cleaner_mobile/core/api/auth_session.dart';
-import 'package:tidy_cleaner_mobile/core/api/auth_token_holder.dart';
-import 'package:tidy_cleaner_mobile/features/login/login_view.dart';
-import 'package:tidy_cleaner_mobile/features/user_settings/presentation/screens/pages/profile.dart';
-import 'package:tidy_cleaner_mobile/features/user_settings/presentation/screens/pages/refer_friend.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
+import 'package:servana_cleaner_mobile/core/api/auth_session.dart';
+import 'package:servana_cleaner_mobile/core/api/auth_token_holder.dart';
+import 'package:servana_cleaner_mobile/features/login/login_view.dart';
+import 'package:servana_cleaner_mobile/features/user_settings/presentation/screens/pages/profile.dart';
+import 'package:servana_cleaner_mobile/features/user_settings/presentation/screens/pages/refer_friend.dart';
 
 class UserSettingsView extends StatelessWidget {
   const UserSettingsView({super.key});

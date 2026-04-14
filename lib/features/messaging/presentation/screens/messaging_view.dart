@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/features/messaging/presentation/screens/chat_view.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/features/messaging/presentation/screens/chat_view.dart';
 
 class MessagingView extends StatefulWidget {
   static const String routeName = 'MessagingView';
@@ -18,7 +18,7 @@ class MessagingView extends StatefulWidget {
 class _MessagingViewState extends State<MessagingView> {
   final groupChats = [
     {
-      'serviceName': 'Tidy Basic',
+      'serviceName': 'Servana Basic',
       'dateSchedule': 'Sept 26, 2024',
       'cleanerName': 'John Doe',
       'customerName': 'Maria Smith',
@@ -26,7 +26,7 @@ class _MessagingViewState extends State<MessagingView> {
       'time': '10:30 AM',
     },
     {
-      'serviceName': 'Tidy Premium ',
+      'serviceName': 'Servana Premium ',
       'dateSchedule': 'Sept 27, 2024',
       'cleanerName': 'Alex Turner',
       'customerName': 'Emma Watson',
@@ -34,7 +34,7 @@ class _MessagingViewState extends State<MessagingView> {
       'time': '2:15 PM',
     },
     {
-      'serviceName': 'Tidy Plus',
+      'serviceName': 'Servana Plus',
       'dateSchedule': 'Sept 28, 2024',
       'cleanerName': 'Jane Doe',
       'customerName': 'Chris Evans',

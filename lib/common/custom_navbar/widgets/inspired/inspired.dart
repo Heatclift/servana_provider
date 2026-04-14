@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import 'package:tidy_cleaner_mobile/common/custom_navbar/tab_item.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/tab_item.dart';
 
 import '../../chip_style.dart';
 import 'package:flutter/material.dart';
@@ -367,24 +367,29 @@ class _InspiredState extends State<Inspired> with TickerProviderStateMixin {
     }
     return Container(
       padding: EdgeInsets.only(bottom: widget.padbottom!, top: widget.padTop!),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          item.icon,
-          if (item.title is String && item.title != '') ...[
-            SizedBox(height: widget.pad),
-            Text(
-              item.title!,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall
-                  ?.merge(widget.titleStyle)
-                  .copyWith(color: itemColor()),
-              textAlign: TextAlign.center,
-            )
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            item.icon,
+            if (item.title is String && item.title != '') ...[
+              SizedBox(height: widget.pad),
+              Text(
+                item.title!,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.merge(widget.titleStyle)
+                    .copyWith(color: itemColor()),
+                textAlign: TextAlign.center,
+              )
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

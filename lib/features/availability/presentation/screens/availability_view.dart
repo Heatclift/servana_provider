@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
 
 class AvailabilityView extends StatefulWidget {
   static const routeName = 'AvailabilityView';

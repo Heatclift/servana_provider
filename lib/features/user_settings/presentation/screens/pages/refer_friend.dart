@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
 
 class ReferFriendView extends StatefulWidget {
   static String routeName = "ReferFriendView";
@@ -231,7 +231,7 @@ class _ReferFriendViewState extends State<ReferFriendView> {
                       ),
                     ),
                     Text(
-                      'Bring your friends to Tidy. Share your code!',
+                      'Bring your friends to Servana. Share your code!',
                       style: TextStyle(
                         fontSize: 16,
                         color: ColorPalette.greyLightText,

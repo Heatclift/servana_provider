@@ -2,8 +2,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
 
 class JobDetailsView extends StatefulWidget {
   static const routeName = '/JobDetailsView';
@@ -97,7 +97,7 @@ class _JobDetailsViewState extends State<JobDetailsView> {
                   ),
                   const Gap(10),
                   const Text(
-                    "🧹 Job Type: Tidy Plus",
+                    "🧹 Job Type: Servana Plus",
                     style: TextStyle(
                       fontSize: 16,
                     ),

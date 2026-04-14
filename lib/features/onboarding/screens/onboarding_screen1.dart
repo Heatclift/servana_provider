@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
 
 class OnboardingScreen1 extends StatelessWidget {
   const OnboardingScreen1({super.key});

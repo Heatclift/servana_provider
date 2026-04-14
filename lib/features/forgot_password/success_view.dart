@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
 
 class SuccessView extends StatelessWidget {
   static String routeName = "SuccessView";

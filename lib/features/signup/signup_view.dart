@@ -2,14 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
-import 'package:tidy_cleaner_mobile/common/domain/services/utils.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_textformfield.dart';
-import 'package:tidy_cleaner_mobile/core/api/servana_api.dart';
-import 'package:tidy_cleaner_mobile/core/api/servana_api_exception.dart';
-import 'package:tidy_cleaner_mobile/features/login/login_view.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
+import 'package:servana_cleaner_mobile/common/domain/services/utils.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_textformfield.dart';
+import 'package:servana_cleaner_mobile/core/api/servana_api.dart';
+import 'package:servana_cleaner_mobile/core/api/servana_api_exception.dart';
+import 'package:servana_cleaner_mobile/features/login/login_view.dart';
 
 /// Servana role: technician (provider app). See Postman Auth Signup comments.
 const int _kServanaRoleTechnician = 2;
@@ -92,7 +92,7 @@ class _SignUpViewState extends State<SignUpView> {
                   const Gap(90),
                   Center(
                     child: Image.asset(
-                      'assets/images/tidy_cleaner_logo.png',
+                      'assets/images/servana_cleaner_logo.png',
                       height: 100,
                     ),
                   ),

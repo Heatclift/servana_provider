@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/data/models/earnings_model.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/withdraw_view.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/features/earnings/data/models/earnings_model.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_view.dart';
 
 class EarningsView extends StatefulWidget {
   const EarningsView({super.key});
@@ -22,7 +22,7 @@ class _EarningsViewState extends State<EarningsView> {
       earningsId: 'E001',
       client: 'John Smith',
       price: '£75.50',
-      cleaningType: 'Tidy Premium',
+      cleaningType: 'Servana Premium',
       address: '221B Baker Street, London',
       status: 'Completed',
       updated: DateTime(2024, 9, 28, 14, 30),
@@ -31,7 +31,7 @@ class _EarningsViewState extends State<EarningsView> {
       earningsId: 'E002',
       client: 'Emily Clarke',
       price: '£45.30',
-      cleaningType: 'Tidy Plus',
+      cleaningType: 'Servana Plus',
       address: '10 Downing Street, London',
       status: 'Pending',
       updated: DateTime(2024, 9, 27, 10, 15),
@@ -40,7 +40,7 @@ class _EarningsViewState extends State<EarningsView> {
       earningsId: 'E003',
       client: 'William Brown',
       price: '£98.70',
-      cleaningType: 'Tidy Premium',
+      cleaningType: 'Servana Premium',
       address: '25 The Crescent, Manchester',
       status: 'Completed',
       updated: DateTime(2024, 9, 26, 16, 45),
@@ -49,7 +49,7 @@ class _EarningsViewState extends State<EarningsView> {
       earningsId: 'E004',
       client: 'Sarah Johnson',
       price: '£63.20',
-      cleaningType: 'Tidy Basic',
+      cleaningType: 'Servana Basic',
       address: '5 Royal Avenue, Liverpool',
       status: 'Ongoing',
       updated: DateTime(2024, 9, 25, 11, 0),
@@ -58,7 +58,7 @@ class _EarningsViewState extends State<EarningsView> {
       earningsId: 'E005',
       client: 'Michael Taylor',
       price: '£32.80',
-      cleaningType: 'Tidy Basic',
+      cleaningType: 'Servana Basic',
       address: '12 High Street, Birmingham',
       status: 'Cancelled',
       updated: DateTime(2024, 9, 24, 9, 30),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/withdraw_success.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_success.dart';
 
 class WithdrawView extends StatefulWidget {
   static const String routeName = 'WithdrawView';

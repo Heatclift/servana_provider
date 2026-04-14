@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
   const OnboardingScreen3({super.key});
@@ -22,7 +22,7 @@ class OnboardingScreen3 extends StatelessWidget {
           ),
           const Gap(10),
           Text(
-            'Receive payments directly to your account quickly and securely after each job. Your earnings are always safe with Tidy.',
+            'Receive payments directly to your account quickly and securely after each job. Your earnings are always safe with Servana.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w400,

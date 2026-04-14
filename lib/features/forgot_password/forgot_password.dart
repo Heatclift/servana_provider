@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_textformfield.dart';
-import 'package:tidy_cleaner_mobile/features/forgot_password/success_view.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_textformfield.dart';
+import 'package:servana_cleaner_mobile/features/forgot_password/success_view.dart';
 
 class ForgotPassword extends StatelessWidget {
   static String routeName = "ForgotPassword";
@@ -22,7 +22,7 @@ class ForgotPassword extends StatelessWidget {
           children: [
             Center(
               child: Image.asset(
-                'assets/images/tidy_cleaner_logo.png',
+                'assets/images/servana_cleaner_logo.png',
                 height: 100,
               ),
             ),

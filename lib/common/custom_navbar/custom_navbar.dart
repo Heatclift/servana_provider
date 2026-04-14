@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tidy_cleaner_mobile/common/custom_navbar/chip_style.dart';
-import 'package:tidy_cleaner_mobile/common/custom_navbar/tab_item.dart';
-import 'package:tidy_cleaner_mobile/common/custom_navbar/widgets/inspired/inspired.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/chip_style.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/tab_item.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/widgets/inspired/inspired.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   final List<TabItem> items;

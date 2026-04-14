@@ -1,32 +1,59 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/domain/routes/route_observer.dart';
-import 'package:tidy_cleaner_mobile/features/availability/presentation/screens/availability_view.dart';
-import 'package:tidy_cleaner_mobile/features/calendar/presentation/screens/calendar_view.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/withdraw_review.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/withdraw_success.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/withdraw_tracking.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/withdraw_view.dart';
-import 'package:tidy_cleaner_mobile/features/forgot_password/forgot_password.dart';
-import 'package:tidy_cleaner_mobile/features/forgot_password/success_view.dart';
-import 'package:tidy_cleaner_mobile/features/homepage/presentation/screens/homepage_view.dart';
-import 'package:tidy_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
-import 'package:tidy_cleaner_mobile/features/login/login_view.dart';
-import 'package:tidy_cleaner_mobile/features/messaging/presentation/screens/chat_view.dart';
-import 'package:tidy_cleaner_mobile/features/onboarding/onboarding_view.dart';
-import 'package:tidy_cleaner_mobile/features/signup/signup_view.dart';
-import 'package:tidy_cleaner_mobile/features/splash/splash_view.dart';
+import 'package:servana_cleaner_mobile/common/domain/routes/route_observer.dart';
+import 'package:servana_cleaner_mobile/core/api/auth_token_holder.dart';
+import 'package:servana_cleaner_mobile/features/availability/presentation/screens/availability_view.dart';
+import 'package:servana_cleaner_mobile/features/calendar/presentation/screens/calendar_view.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_review.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_success.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_tracking.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_view.dart';
+import 'package:servana_cleaner_mobile/features/forgot_password/forgot_password.dart';
+import 'package:servana_cleaner_mobile/features/forgot_password/success_view.dart';
+import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/homepage_view.dart';
+import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
+import 'package:servana_cleaner_mobile/features/login/login_view.dart';
+import 'package:servana_cleaner_mobile/features/messaging/presentation/screens/chat_view.dart';
+import 'package:servana_cleaner_mobile/features/onboarding/onboarding_view.dart';
+import 'package:servana_cleaner_mobile/features/signup/signup_view.dart';
+import 'package:servana_cleaner_mobile/features/splash/splash_view.dart';
 
 class MainRouter {
-  static GoRouter router() {
+  static GoRouter router({required AuthTokenHolder authHolder}) {
     return GoRouter(
       initialLocation: SplashView.route,
+      refreshListenable: authHolder,
       debugLogDiagnostics: kDebugMode,
       // errorBuilder: (context, state) {
       //   return const Dashboard();
       // },
       observers: [AnalyticsRouteObserver()],
+      redirect: (context, state) {
+        final loggedIn = authHolder.isLoggedIn;
+        final loc = state.matchedLocation;
+
+        final authFlowRoutes = <String>{
+          SplashView.route,
+          OnboardingView.route,
+          LoginView.route,
+          SignUpView.route,
+          ForgotPassword.route,
+          SuccessView.route,
+        };
+
+        if (loggedIn) {
+          if (authFlowRoutes.contains(loc)) {
+            return HomepageView.route;
+          }
+          return null;
+        }
+
+        if (!authFlowRoutes.contains(loc)) {
+          return LoginView.route;
+        }
+        return null;
+      },
       routes: [
         GoRoute(
           path: SplashView.route,

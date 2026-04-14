@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/features/onboarding/onboarding_view.dart';
+import 'package:servana_cleaner_mobile/features/onboarding/onboarding_view.dart';
 
 class SplashView extends StatefulWidget {
   static String routeName = "SplashView";
@@ -20,7 +20,8 @@ class _SplashViewState extends State<SplashView>
     Future.delayed(
       const Duration(seconds: 3),
       () {
-        context.pushNamed(OnboardingView.routeName);
+        if (!mounted) return;
+        context.goNamed(OnboardingView.routeName);
       },
     );
   }
@@ -33,7 +34,7 @@ class _SplashViewState extends State<SplashView>
         duration: const Duration(seconds: 2),
         child: Center(
           child: Image.asset(
-            'assets/images/tidy_cleaner_logo.png',
+            'assets/images/servana_cleaner_logo.png',
             height: 200,
             width: 200,
           ),

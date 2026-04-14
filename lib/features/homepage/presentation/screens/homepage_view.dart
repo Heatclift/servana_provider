@@ -3,17 +3,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/custom_navbar/chip_style.dart';
-import 'package:tidy_cleaner_mobile/common/custom_navbar/custom_navbar.dart';
-import 'package:tidy_cleaner_mobile/common/custom_navbar/tab_item.dart';
-import 'package:tidy_cleaner_mobile/common/custom_navbar/widgets/inspired/inspired.dart';
-import 'package:tidy_cleaner_mobile/features/availability/presentation/screens/availability_view.dart';
-import 'package:tidy_cleaner_mobile/features/calendar/presentation/screens/calendar_view.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/earnings_view.dart';
-import 'package:tidy_cleaner_mobile/features/homepage/presentation/screens/pages/home.dart';
-import 'package:tidy_cleaner_mobile/features/jobs/presentation/screens/jobs_view.dart';
-import 'package:tidy_cleaner_mobile/features/messaging/presentation/screens/messaging_view.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/chip_style.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/custom_navbar.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/tab_item.dart';
+import 'package:servana_cleaner_mobile/common/custom_navbar/widgets/inspired/inspired.dart';
+import 'package:servana_cleaner_mobile/features/availability/presentation/screens/availability_view.dart';
+import 'package:servana_cleaner_mobile/features/calendar/presentation/screens/calendar_view.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/earnings_view.dart';
+import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/pages/home.dart';
+import 'package:servana_cleaner_mobile/features/jobs/presentation/screens/jobs_view.dart';
+import 'package:servana_cleaner_mobile/features/messaging/presentation/screens/messaging_view.dart';
 
 class HomepageView extends StatefulWidget {
   static String routeName = "HomepageView";

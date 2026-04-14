@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
-import 'package:tidy_cleaner_mobile/common/domain/routes/main_router.dart';
-import 'package:tidy_cleaner_mobile/core/api/auth_session.dart';
-import 'package:tidy_cleaner_mobile/core/api/auth_token_holder.dart';
+import 'package:go_router/go_router.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
+import 'package:servana_cleaner_mobile/common/domain/routes/main_router.dart';
+import 'package:servana_cleaner_mobile/core/api/auth_session.dart';
+import 'package:servana_cleaner_mobile/core/api/auth_token_holder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initInjector();
-  await AuthSessionBootstrap.restore(dpLocator<AuthTokenHolder>());
-  runApp(const MyApp());
+  final tokenHolder = dpLocator<AuthTokenHolder>();
+  await AuthSessionBootstrap.restore(tokenHolder);
+  runApp(MyApp(tokenHolder: tokenHolder));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.tokenHolder});
+
+  final AuthTokenHolder tokenHolder;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  final router = MainRouter.router();
+  late final GoRouter _router =
+      MainRouter.router(authHolder: widget.tokenHolder);
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +95,9 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
-      routerDelegate: router.routerDelegate,
+      routeInformationParser: _router.routeInformationParser,
+      routeInformationProvider: _router.routeInformationProvider,
+      routerDelegate: _router.routerDelegate,
     );
   }
 }

@@ -8,7 +8,7 @@ import 'auth_token_holder.dart';
 abstract final class ServanaApiConfig {
   static const String baseUrl = String.fromEnvironment(
     'SERVANA_API_URL',
-    defaultValue: 'https://api.servana.example',
+    defaultValue: 'https://api.servana.com.ph',
   );
 
   static Dio createDio(AuthTokenHolder tokenHolder) {

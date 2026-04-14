@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
-import 'package:tidy_cleaner_mobile/features/earnings/presentation/screens/withdraw_tracking.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_tracking.dart';
 
 class WithdrawSuccess extends StatelessWidget {
   static const routeName = 'WithdrawSuccess';

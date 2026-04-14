@@ -3,9 +3,9 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:intl/intl.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_textformfield.dart';
-import 'package:tidy_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_textformfield.dart';
+import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
 
 class JobsView extends StatefulWidget {
   const JobsView({super.key});
@@ -23,7 +23,7 @@ class _JobsViewState extends State<JobsView>
       "id": "1",
       "status": "to confirm",
       "image": '',
-      "title": "Tidy Premium",
+      "title": "Servana Premium",
       'price': '45.00',
       'description': 'Special Instruction : Focus on kitchen and living room',
     },
@@ -32,7 +32,7 @@ class _JobsViewState extends State<JobsView>
       "status": "upcoming",
       "image":
           'https://firebasestorage.googleapis.com/v0/b/gwana-350308.appspot.com/o/Rectangle%208.png?alt=media&token=91945856-77c2-47db-bd06-52fa70c6c9e8',
-      "title": "Tidy Basic",
+      "title": "Servana Basic",
       'price': '20.00',
       'description': 'Special Instruction : Focus on kitchen and living room',
     },
@@ -50,7 +50,7 @@ class _JobsViewState extends State<JobsView>
       "status": "ongoing",
       "image":
           'https://firebasestorage.googleapis.com/v0/b/gwana-350308.appspot.com/o/Rectangle%208.png?alt=media&token=91945856-77c2-47db-bd06-52fa70c6c9e8',
-      "title": "Tidy Basic",
+      "title": "Servana Basic",
       'price': '20.00',
       'description': 'Special Instruction : Focus on kitchen and living room',
     },
@@ -59,7 +59,7 @@ class _JobsViewState extends State<JobsView>
       "status": "completed",
       "image":
           'https://firebasestorage.googleapis.com/v0/b/gwana-350308.appspot.com/o/Rectangle%208.png?alt=media&token=91945856-77c2-47db-bd06-52fa70c6c9e8',
-      "title": "Tidy Premium",
+      "title": "Servana Premium",
       'price': '45.00',
       'description': 'Special Instruction : Focus on kitchen and living room',
     },
@@ -68,7 +68,7 @@ class _JobsViewState extends State<JobsView>
       "status": "cancelled",
       "image":
           'https://firebasestorage.googleapis.com/v0/b/gwana-350308.appspot.com/o/Rectangle%208.png?alt=media&token=91945856-77c2-47db-bd06-52fa70c6c9e8',
-      "title": "Tidy Premium",
+      "title": "Servana Premium",
       'price': '45.00',
       'description': 'Special Instruction : Focus on kitchen and living room',
     },
@@ -77,7 +77,7 @@ class _JobsViewState extends State<JobsView>
       "status": "completed",
       "image":
           'https://firebasestorage.googleapis.com/v0/b/gwana-350308.appspot.com/o/Rectangle%208.png?alt=media&token=91945856-77c2-47db-bd06-52fa70c6c9e8',
-      "title": "Tidy Premium",
+      "title": "Servana Premium",
       'price': '45.00',
       'description': 'Special Instruction : Focus on kitchen and living room',
     },
@@ -85,7 +85,7 @@ class _JobsViewState extends State<JobsView>
       "id": "7",
       "status": "to confirm",
       "image": '',
-      "title": "Tidy Premium",
+      "title": "Servana Premium",
       'price': '45.00',
       'description': 'Special Instruction : Focus on kitchen and living room',
     },

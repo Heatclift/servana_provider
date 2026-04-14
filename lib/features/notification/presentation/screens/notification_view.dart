@@ -3,7 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
 
 class NotificationView extends StatefulWidget {
   static String routeName = "NotificationView";

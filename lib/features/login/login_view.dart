@@ -4,18 +4,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
-import 'package:tidy_cleaner_mobile/common/domain/services/utils.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_button.dart';
-import 'package:tidy_cleaner_mobile/common/widgets/custom_textformfield.dart';
-import 'package:tidy_cleaner_mobile/core/api/auth_session.dart';
-import 'package:tidy_cleaner_mobile/core/api/auth_token_holder.dart';
-import 'package:tidy_cleaner_mobile/core/api/servana_api.dart';
-import 'package:tidy_cleaner_mobile/core/api/servana_api_exception.dart';
-import 'package:tidy_cleaner_mobile/features/forgot_password/forgot_password.dart';
-import 'package:tidy_cleaner_mobile/features/homepage/presentation/screens/homepage_view.dart';
-import 'package:tidy_cleaner_mobile/features/signup/signup_view.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
+import 'package:servana_cleaner_mobile/common/domain/services/utils.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_button.dart';
+import 'package:servana_cleaner_mobile/common/widgets/custom_textformfield.dart';
+import 'package:servana_cleaner_mobile/core/api/auth_session.dart';
+import 'package:servana_cleaner_mobile/core/api/auth_token_holder.dart';
+import 'package:servana_cleaner_mobile/core/api/servana_api.dart';
+import 'package:servana_cleaner_mobile/core/api/servana_api_exception.dart';
+import 'package:servana_cleaner_mobile/features/forgot_password/forgot_password.dart';
+import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/homepage_view.dart';
+import 'package:servana_cleaner_mobile/features/signup/signup_view.dart';
 
 class LoginView extends StatefulWidget {
   static String routeName = "LoginView";
@@ -52,7 +52,7 @@ class _LoginViewState extends State<LoginView> {
       await AuthSessionBootstrap.persist(dpLocator<AuthTokenHolder>().token);
       if (!mounted) return;
       showSnackBar(context, 'Signed in successfully.');
-      context.pushNamed(HomepageView.routeName);
+      context.goNamed(HomepageView.routeName);
     } on ServanaApiException catch (e) {
       if (mounted) showSnackBar(context, e.message);
     } catch (e) {
@@ -79,7 +79,7 @@ class _LoginViewState extends State<LoginView> {
                 const Gap(90),
                 Center(
                   child: Image.asset(
-                    'assets/images/tidy_cleaner_logo.png',
+                    'assets/images/servana_cleaner_logo.png',
                     height: 100,
                   ),
                 ),

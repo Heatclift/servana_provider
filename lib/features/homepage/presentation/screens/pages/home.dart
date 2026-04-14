@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:tidy_cleaner_mobile/common/color_pallete.dart';
-import 'package:tidy_cleaner_mobile/features/homepage/data/models/bookingrequest_model.dart';
-import 'package:tidy_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
+import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/features/homepage/data/models/bookingrequest_model.dart';
+import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +19,7 @@ class _HomeViewState extends State<HomeScreen> {
 
   final ongoingRequests = [
     BookingRequestModel(
-      cleaningType: 'Tidy Premium',
+      cleaningType: 'Servana Premium',
       customerName: 'Jade Abraham',
       price: '45.00',
       address: '13 Park Rd,	Sittingbourne, ME10 1DR',
@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeScreen> {
       updated: DateTime.parse('2024-09-25 19:01:42.157714'),
     ),
     BookingRequestModel(
-      cleaningType: 'Tidy Basic',
+      cleaningType: 'Servana Basic',
       customerName: 'Markus Gibson',
       price: '45.00',
       address: '13 Park Rd,	Sittingbourne, ME10 1DR',
@@ -37,7 +37,7 @@ class _HomeViewState extends State<HomeScreen> {
   ];
   final pendingRequests = [
     BookingRequestModel(
-      cleaningType: 'Tidy Plus',
+      cleaningType: 'Servana Plus',
       customerName: 'Lewis Clark',
       price: '45.00',
       address: '13 Park Rd,	Sittingbourne, ME10 1DR',
@@ -45,7 +45,7 @@ class _HomeViewState extends State<HomeScreen> {
       updated: DateTime.parse('2024-09-27 19:01:42.157714'),
     ),
     BookingRequestModel(
-      cleaningType: 'Tidy Premium',
+      cleaningType: 'Servana Premium',
       customerName: 'Flora Lorenz',
       price: '45.00',
       address: '13 Park Rd,	Sittingbourne, ME10 1DR',
