@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import 'auth_token_holder.dart';
 import 'servana_api_exception.dart';
+import 'session_profile.dart';
 
 /// REST client aligned with [Servana.postman_collection.json].
 ///
@@ -9,15 +10,19 @@ import 'servana_api_exception.dart';
 /// response does not do it automatically (signIn updates [AuthTokenHolder] when
 /// parsing succeeds).
 class ServanaApi {
-  ServanaApi(this._dio, this._tokenHolder);
+  ServanaApi(this._dio, this._tokenHolder, this._profile);
 
   final Dio _dio;
   final AuthTokenHolder _tokenHolder;
+  final SessionProfile _profile;
 
   /// Stores JWT for subsequent Bearer requests (same as Postman `{{token}}`).
   void setSessionToken(String? token) => _tokenHolder.setToken(token);
 
-  void clearSession() => _tokenHolder.clear();
+  void clearSession() {
+    _tokenHolder.clear();
+    _profile.clear();
+  }
 
   Future<Response<dynamic>> _request(
     Future<Response<dynamic>> Function() call,
@@ -29,17 +34,47 @@ class ServanaApi {
     }
   }
 
+  /// Backends sometimes return `HTTP 200` with `{"status": "fail", "message": ...}`
+  /// instead of a 4xx. Surface those as [ServanaApiException] so callers can
+  /// treat them uniformly with network/4xx failures.
+  ///
+  /// Only known failure statuses trip this — a response whose top-level
+  /// `status` is a domain value (e.g. a booking's `"CONFIRMED"`) must pass
+  /// through unchanged.
+  static const _failureEnvelopeStatuses = {'fail', 'error'};
+
+  void _assertSuccessEnvelope(Response<dynamic> res) {
+    final data = res.data;
+    if (data is Map) {
+      final status = data['status']?.toString().toLowerCase();
+      if (status != null && _failureEnvelopeStatuses.contains(status)) {
+        final msg =
+            (data['message'] ?? data['error'] ?? 'Request failed').toString();
+        throw ServanaApiException(
+          message: msg,
+          statusCode: res.statusCode,
+          responseData: data,
+        );
+      }
+    }
+  }
+
   // --- Auth ---
 
-  Future<Response<dynamic>> signUp(Map<String, dynamic> body) => _request(
-        () => _dio.post<dynamic>('/api/auth/signup', data: body),
-      );
+  Future<Response<dynamic>> signUp(Map<String, dynamic> body) async {
+    final res = await _request(
+      () => _dio.post<dynamic>('/api/auth/signup', data: body),
+    );
+    _assertSuccessEnvelope(res);
+    return res;
+  }
 
   /// Password sign-in. On success, sets [AuthTokenHolder] from `data.token`.
   Future<Response<dynamic>> signIn(Map<String, dynamic> body) async {
     final res = await _request(
       () => _dio.post<dynamic>('/api/auth/signin', data: body),
     );
+    _assertSuccessEnvelope(res);
     _applyTokenFromSignIn(res.data);
     return res;
   }
@@ -51,12 +86,18 @@ class ServanaApi {
       if (t is String && t.isNotEmpty) {
         _tokenHolder.setToken(t);
       }
+      _profile.setFromSigninData(d);
     }
   }
 
-  Future<Response<dynamic>> firebaseLogin(Map<String, dynamic> body) =>
-      _request(
-          () => _dio.post<dynamic>('/api/auth/firebase-login', data: body));
+  Future<Response<dynamic>> firebaseLogin(Map<String, dynamic> body) async {
+    final res = await _request(
+      () => _dio.post<dynamic>('/api/auth/firebase-login', data: body),
+    );
+    _assertSuccessEnvelope(res);
+    _applyTokenFromSignIn(res.data);
+    return res;
+  }
 
   Future<Response<dynamic>> resendVerification(String email) => _request(
         () => _dio.get<dynamic>(
@@ -203,6 +244,49 @@ class ServanaApi {
   Future<Response<dynamic>> updateWorkerLocation(Map<String, dynamic> body) =>
       _request(() => _dio.post<dynamic>('/api/workers/location', data: body));
 
+  // --- Worker job lifecycle (mobile worker/employee) ---
+
+  /// GET /api/workers/:workerId/job-cards — assigned jobs for the logged-in worker.
+  Future<Response<dynamic>> getWorkerJobCards(String workerId) => _request(
+        () => _dio.get<dynamic>('/api/workers/$workerId/job-cards'),
+      );
+
+  /// PUT /api/workers/bookings/:bookingId/accept?workerUid=<uid>
+  Future<Response<dynamic>> acceptJob({
+    required String bookingId,
+    required String workerUid,
+  }) =>
+      _request(
+        () => _dio.put<dynamic>(
+          '/api/workers/bookings/$bookingId/accept',
+          queryParameters: {'workerUid': workerUid},
+        ),
+      );
+
+  /// PUT /api/workers/bookings/:bookingId/start?workerUid=<uid>
+  Future<Response<dynamic>> startJob({
+    required String bookingId,
+    required String workerUid,
+  }) =>
+      _request(
+        () => _dio.put<dynamic>(
+          '/api/workers/bookings/$bookingId/start',
+          queryParameters: {'workerUid': workerUid},
+        ),
+      );
+
+  /// PUT /api/workers/bookings/:bookingId/complete?workerUid=<uid>
+  Future<Response<dynamic>> completeJob({
+    required String bookingId,
+    required String workerUid,
+  }) =>
+      _request(
+        () => _dio.put<dynamic>(
+          '/api/workers/bookings/$bookingId/complete',
+          queryParameters: {'workerUid': workerUid},
+        ),
+      );
+
   // --- Bookings ---
 
   Future<Response<dynamic>> createBooking({
@@ -234,6 +318,12 @@ class ServanaApi {
 
   Future<Response<dynamic>> getBookingTracking(String id) => _request(
         () => _dio.get<dynamic>('/api/$id/tracking'),
+      );
+
+  /// GET /api/users/:userId/bookings — bookings owned by a user id
+  /// (customer-centric; kept for parity with the root postman).
+  Future<Response<dynamic>> getUserBookings(String userId) => _request(
+        () => _dio.get<dynamic>('/api/users/$userId/bookings'),
       );
 
   // --- Payments ---

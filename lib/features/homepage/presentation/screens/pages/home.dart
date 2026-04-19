@@ -4,6 +4,10 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:servana_cleaner_mobile/common/color_pallete.dart';
+import 'package:servana_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
+import 'package:servana_cleaner_mobile/core/api/session_profile.dart';
+import 'package:servana_cleaner_mobile/features/homepage/data/job_cards_store.dart';
+import 'package:servana_cleaner_mobile/features/homepage/data/job_status.dart';
 import 'package:servana_cleaner_mobile/features/homepage/data/models/bookingrequest_model.dart';
 import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
 
@@ -17,42 +21,36 @@ class HomeScreen extends StatefulWidget {
 class _HomeViewState extends State<HomeScreen> {
   double scrollOffset = 0.0;
 
-  final ongoingRequests = [
-    BookingRequestModel(
-      cleaningType: 'Servana Premium',
-      customerName: 'Jade Abraham',
-      price: '45.00',
-      address: '13 Park Rd,	Sittingbourne, ME10 1DR',
-      status: 'Ongoing',
-      updated: DateTime.parse('2024-09-25 19:01:42.157714'),
-    ),
-    BookingRequestModel(
-      cleaningType: 'Servana Basic',
-      customerName: 'Markus Gibson',
-      price: '45.00',
-      address: '13 Park Rd,	Sittingbourne, ME10 1DR',
-      status: 'Ongoing',
-      updated: DateTime.parse('2024-09-26 19:01:42.157714'),
-    ),
-  ];
-  final pendingRequests = [
-    BookingRequestModel(
-      cleaningType: 'Servana Plus',
-      customerName: 'Lewis Clark',
-      price: '45.00',
-      address: '13 Park Rd,	Sittingbourne, ME10 1DR',
-      status: 'Ongoing',
-      updated: DateTime.parse('2024-09-27 19:01:42.157714'),
-    ),
-    BookingRequestModel(
-      cleaningType: 'Servana Premium',
-      customerName: 'Flora Lorenz',
-      price: '45.00',
-      address: '13 Park Rd,	Sittingbourne, ME10 1DR',
-      status: 'Ongoing',
-      updated: DateTime.parse('2024-09-28 19:01:42.157714'),
-    ),
-  ];
+  JobCardsStore get _store => dpLocator<JobCardsStore>();
+
+  @override
+  void initState() {
+    super.initState();
+    _store.addListener(_onStoreChange);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _store.load());
+  }
+
+  @override
+  void dispose() {
+    _store.removeListener(_onStoreChange);
+    super.dispose();
+  }
+
+  void _onStoreChange() {
+    if (mounted) setState(() {});
+  }
+
+  bool get _loading => _store.loading && _store.jobs.isEmpty;
+  String? get _error => _store.error;
+  List<BookingRequestModel> get _jobs => _store.jobs;
+
+  List<BookingRequestModel> get ongoingRequests =>
+      _jobs.where(JobStatus.isOngoing).toList();
+
+  List<BookingRequestModel> get pendingRequests =>
+      _jobs.where(JobStatus.isPending).toList();
+
+  int get _completedCount => _jobs.where(JobStatus.isCompleted).length;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -95,31 +93,33 @@ class _HomeViewState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    const Column(
-                      children: [
-                        Text(
-                          'John Mark Dela Cruz',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          'jmdelacruz@gmail.com',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          'Member Since: Sept 26, 2024',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+                    AnimatedBuilder(
+                      animation: dpLocator<SessionProfile>(),
+                      builder: (context, _) {
+                        final profile = dpLocator<SessionProfile>();
+                        final name = profile.displayName;
+                        final email = profile.email ?? '';
+                        return Column(
+                          children: [
+                            Text(
+                              name.isEmpty ? 'Servana Provider' : name,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            if (email.isNotEmpty)
+                              Text(
+                                email,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -241,9 +241,7 @@ class _HomeViewState extends State<HomeScreen> {
                             ),
                             _buildMetricsGrid(),
                             const Gap(30),
-                            _buildOngoingRequests(),
-                            const Gap(30),
-                            _buildPendingRequests(),
+                            _buildJobsContent(),
                             const Gap(10),
                           ],
                         ),
@@ -259,7 +257,21 @@ class _HomeViewState extends State<HomeScreen> {
     );
   }
 
+  num get _lifetimeCompleted {
+    num total = 0;
+    for (final b in _jobs) {
+      if (JobStatus.isCompleted(b)) {
+        total += b.totalAmount ?? b.basePrice ?? 0;
+      }
+    }
+    return total;
+  }
+
   Widget _buildEarningsCard() {
+    final fmt = NumberFormat.decimalPattern('en_US');
+    fmt.minimumFractionDigits = 2;
+    fmt.maximumFractionDigits = 2;
+    final total = fmt.format(_lifetimeCompleted);
     return SizedBox(
       width: double.infinity,
       height: 100,
@@ -278,19 +290,19 @@ class _HomeViewState extends State<HomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '£ 1,213.00',
-                    style: TextStyle(
+                    '₱ $total',
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Total Earnings',
                     style: TextStyle(
                       fontSize: 14,
@@ -309,7 +321,7 @@ class _HomeViewState extends State<HomeScreen> {
                 ),
                 child: const Center(
                   child: Text(
-                    '£',
+                    '₱',
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
@@ -339,7 +351,7 @@ class _HomeViewState extends State<HomeScreen> {
       children: [
         _buildMetricsCard(
           title: 'Pending',
-          value: '3',
+          value: pendingRequests.length.toString(),
           icon: const Icon(
             Icons.pending_actions_rounded,
             size: 25,
@@ -354,7 +366,7 @@ class _HomeViewState extends State<HomeScreen> {
         ),
         _buildMetricsCard(
           title: 'Ongoing',
-          value: '6',
+          value: ongoingRequests.length.toString(),
           icon: const Icon(
             Icons.loop,
             size: 25,
@@ -369,7 +381,7 @@ class _HomeViewState extends State<HomeScreen> {
         ),
         _buildMetricsCard(
           title: 'Completed',
-          value: '8',
+          value: _completedCount.toString(),
           icon: const Icon(
             Icons.check_circle_outline_rounded,
             size: 25,
@@ -384,7 +396,7 @@ class _HomeViewState extends State<HomeScreen> {
         ),
         _buildMetricsCard(
           title: 'My Rating',
-          value: '4.8',
+          value: '—',
           icon: const Icon(
             Icons.star,
             size: 25,
@@ -397,6 +409,54 @@ class _HomeViewState extends State<HomeScreen> {
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildJobsContent() {
+    if (_loading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 40),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (_error != null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        child: Column(
+          children: [
+            Icon(Icons.error_outline, size: 40, color: Colors.red[300]),
+            const Gap(8),
+            Text(
+              _error!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.redAccent),
+            ),
+            const Gap(12),
+            TextButton(
+              onPressed: () => _store.refresh(),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+    if (_jobs.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 40),
+        child: Center(
+          child: Text(
+            'No jobs assigned yet.',
+            style: TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+        ),
+      );
+    }
+    return Column(
+      children: [
+        _buildOngoingRequests(),
+        const Gap(30),
+        _buildPendingRequests(),
       ],
     );
   }
@@ -421,7 +481,16 @@ class _HomeViewState extends State<HomeScreen> {
             ),
           ],
         ),
-        ListView.separated(
+        if (ongoingRequests.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Text(
+              'No ongoing jobs.',
+              style: TextStyle(color: Colors.grey),
+            ),
+          )
+        else
+          ListView.separated(
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           itemCount: ongoingRequests.length,
@@ -431,7 +500,10 @@ class _HomeViewState extends State<HomeScreen> {
             final request = ongoingRequests[index];
             return GestureDetector(
               onTap: () {
-                context.pushNamed(JobDetailsView.routeName);
+                context.pushNamed(
+                  JobDetailsView.routeName,
+                  extra: request,
+                );
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -468,7 +540,7 @@ class _HomeViewState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              request.customerName,
+                              request.customerName ?? 'Customer',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -524,7 +596,16 @@ class _HomeViewState extends State<HomeScreen> {
             ),
           ],
         ),
-        ListView.separated(
+        if (pendingRequests.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Text(
+              'No pending jobs.',
+              style: TextStyle(color: Colors.grey),
+            ),
+          )
+        else
+          ListView.separated(
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           itemCount: pendingRequests.length,
@@ -534,7 +615,10 @@ class _HomeViewState extends State<HomeScreen> {
             final request = pendingRequests[index];
             return GestureDetector(
               onTap: () {
-                context.pushNamed(JobDetailsView.routeName);
+                context.pushNamed(
+                  JobDetailsView.routeName,
+                  extra: request,
+                );
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -571,7 +655,7 @@ class _HomeViewState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              request.customerName,
+                              request.customerName ?? 'Customer',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

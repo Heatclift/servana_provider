@@ -21,8 +21,11 @@ class ServanaApiException implements Exception {
     final code = e.response?.statusCode;
     final data = e.response?.data;
     String msg = e.message ?? 'Request failed';
-    if (data is Map && data['message'] != null) {
-      msg = data['message'].toString();
+    if (data is Map) {
+      final serverMsg = data['message'] ?? data['error'];
+      if (serverMsg != null && serverMsg.toString().isNotEmpty) {
+        msg = serverMsg.toString();
+      }
     } else if (data is String && data.isNotEmpty) {
       msg = data;
     }

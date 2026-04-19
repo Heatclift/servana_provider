@@ -67,22 +67,9 @@ class _AvailabilityViewState extends State<AvailabilityView> {
   @override
   void initState() {
     super.initState();
-
-    selectedDays = {1, 3}; // this is test Monday and Wednesday
-    availability = {
-      1: [
-        const TimeOfDay(hour: 9, minute: 0),
-        const TimeOfDay(hour: 14, minute: 0)
-      ], // this is test for 1 - Monday: 9:00 AM and 2:00 PM
-      3: [
-        const TimeOfDay(hour: 11, minute: 0),
-        const TimeOfDay(hour: 16, minute: 0)
-      ], // this is test for 3 - Wednesday: 11:00 AM and 4:00 PM
-    };
-    availabilityStatus = {
-      1: true, // Monday: Available
-      3: true, // Wednesday: Available
-    };
+    selectedDays = {};
+    availability = {};
+    availabilityStatus = {};
   }
 
   @override
@@ -105,6 +92,27 @@ class _AvailabilityViewState extends State<AvailabilityView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.amber.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.amber.shade300),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.info_outline, size: 16, color: Colors.orange),
+                  Gap(8),
+                  Expanded(
+                    child: Text(
+                      'Stored on this device only — backend sync for availability is not yet wired up.',
+                      style: TextStyle(fontSize: 12, color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Gap(16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(days.length, (index) {

@@ -92,7 +92,7 @@ class _SignUpViewState extends State<SignUpView> {
                   const Gap(90),
                   Center(
                     child: Image.asset(
-                      'assets/images/servana_cleaner_logo.png',
+                      'assets/images/tidy_cleaner_logo.png',
                       height: 100,
                     ),
                   ),

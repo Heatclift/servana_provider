@@ -5,12 +5,14 @@ import 'package:servana_cleaner_mobile/common/domain/injectors/dependecy_injecto
 import 'package:servana_cleaner_mobile/common/domain/routes/main_router.dart';
 import 'package:servana_cleaner_mobile/core/api/auth_session.dart';
 import 'package:servana_cleaner_mobile/core/api/auth_token_holder.dart';
+import 'package:servana_cleaner_mobile/core/api/session_profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initInjector();
   final tokenHolder = dpLocator<AuthTokenHolder>();
-  await AuthSessionBootstrap.restore(tokenHolder);
+  final sessionProfile = dpLocator<SessionProfile>();
+  await AuthSessionBootstrap.restore(tokenHolder, sessionProfile);
   runApp(MyApp(tokenHolder: tokenHolder));
 }
 

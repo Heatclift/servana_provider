@@ -26,12 +26,11 @@ class HomepageView extends StatefulWidget {
 
 class _HomepageViewState extends State<HomepageView>
     with SingleTickerProviderStateMixin {
-  late PageController pageController;
   bool _isOptExpanded = false;
   late AnimationController _controller;
   late Animation<double> _animation;
   int _bottomNavIndex = 0;
-  String selectedMiddleTab = '';
+  String selectedMiddleTab = 'Calendar Schedule';
 
   final _iconList = [
     'assets/icons/svg/home_icon.svg',
@@ -43,7 +42,6 @@ class _HomepageViewState extends State<HomepageView>
   @override
   void initState() {
     super.initState();
-    pageController = PageController();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -63,19 +61,14 @@ class _HomepageViewState extends State<HomepageView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (v) {
-          _bottomNavIndex = v;
-        },
+      body: IndexedStack(
+        index: _bottomNavIndex,
         children: [
           const HomeScreen(),
           const JobsView(),
-          selectedMiddleTab != ''
-              ? selectedMiddleTab == 'Availability'
-                  ? const AvailabilityView()
-                  : const CalendarView()
-              : const SizedBox(),
+          selectedMiddleTab == 'Availability'
+              ? const AvailabilityView()
+              : const CalendarView(),
           const EarningsView(),
           const MessagingView(),
         ],
@@ -117,8 +110,10 @@ class _HomepageViewState extends State<HomepageView>
                         angle: -135,
                         diameter: 100,
                         onTap: () async {
+                          setState(() {
+                            selectedMiddleTab = 'Availability';
+                          });
                           _toggleOptions();
-                          selectedMiddleTab = 'Availability';
                         },
                       ),
                       _buildOption(
@@ -132,8 +127,10 @@ class _HomepageViewState extends State<HomepageView>
                         angle: -45,
                         diameter: 100,
                         onTap: () {
+                          setState(() {
+                            selectedMiddleTab = 'Calendar Schedule';
+                          });
                           _toggleOptions();
-                          selectedMiddleTab = 'Calendar Schedule';
                         },
                       ),
                       FloatingActionButton(
@@ -202,21 +199,15 @@ class _HomepageViewState extends State<HomepageView>
           ),
         ],
         onTap: (index) {
-          if (index == 2) {
-            _bottomNavIndex = index;
-            _toggleOptions();
-            _bottomNavIndex = index;
-            pageController.jumpToPage(_bottomNavIndex);
-          } else {
-            setState(() {
+          setState(() {
+            if (index == 2) {
+              _toggleOptions();
+            } else {
               _isOptExpanded = false;
               _controller.reverse();
-            });
+            }
             _bottomNavIndex = index;
-            pageController.jumpToPage(_bottomNavIndex);
-          }
-
-          setState(() {});
+          });
         },
         backgroundColor: Colors.white,
         color: Colors.grey,

@@ -11,6 +11,7 @@ import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/wi
 import 'package:servana_cleaner_mobile/features/earnings/presentation/screens/withdraw_view.dart';
 import 'package:servana_cleaner_mobile/features/forgot_password/forgot_password.dart';
 import 'package:servana_cleaner_mobile/features/forgot_password/success_view.dart';
+import 'package:servana_cleaner_mobile/features/homepage/data/models/bookingrequest_model.dart';
 import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/homepage_view.dart';
 import 'package:servana_cleaner_mobile/features/homepage/presentation/screens/pages/job_details.dart';
 import 'package:servana_cleaner_mobile/features/login/login_view.dart';
@@ -18,6 +19,7 @@ import 'package:servana_cleaner_mobile/features/messaging/presentation/screens/c
 import 'package:servana_cleaner_mobile/features/onboarding/onboarding_view.dart';
 import 'package:servana_cleaner_mobile/features/signup/signup_view.dart';
 import 'package:servana_cleaner_mobile/features/splash/splash_view.dart';
+import 'package:servana_cleaner_mobile/features/user_settings/presentation/screens/pages/profile.dart';
 
 class MainRouter {
   static GoRouter router({required AuthTokenHolder authHolder}) {
@@ -109,7 +111,15 @@ class MainRouter {
         GoRoute(
           path: JobDetailsView.route,
           name: JobDetailsView.routeName,
-          builder: (context, state) => const JobDetailsView(),
+          redirect: (context, state) {
+            if (state.extra is! BookingRequestModel) {
+              return HomepageView.route;
+            }
+            return null;
+          },
+          builder: (context, state) => JobDetailsView(
+            booking: state.extra as BookingRequestModel,
+          ),
         ),
         GoRoute(
           path: ChatView.route,
@@ -147,6 +157,11 @@ class MainRouter {
           path: AvailabilityView.route,
           name: AvailabilityView.routeName,
           builder: (context, state) => const AvailabilityView(),
+        ),
+        GoRoute(
+          path: ProfileView.route,
+          name: ProfileView.routeName,
+          builder: (context, state) => const ProfileView(),
         ),
       ],
     );

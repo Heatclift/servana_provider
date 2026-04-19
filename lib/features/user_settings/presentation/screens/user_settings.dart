@@ -5,6 +5,8 @@ import 'package:servana_cleaner_mobile/common/color_pallete.dart';
 import 'package:servana_cleaner_mobile/common/domain/injectors/dependecy_injector.dart';
 import 'package:servana_cleaner_mobile/core/api/auth_session.dart';
 import 'package:servana_cleaner_mobile/core/api/auth_token_holder.dart';
+import 'package:servana_cleaner_mobile/core/api/session_profile.dart';
+import 'package:servana_cleaner_mobile/features/homepage/data/job_cards_store.dart';
 import 'package:servana_cleaner_mobile/features/login/login_view.dart';
 import 'package:servana_cleaner_mobile/features/user_settings/presentation/screens/pages/profile.dart';
 import 'package:servana_cleaner_mobile/features/user_settings/presentation/screens/pages/refer_friend.dart';
@@ -60,22 +62,31 @@ class UserSettingsView extends StatelessWidget {
                   const Gap(20),
                   Padding(
                     padding: const EdgeInsets.only(top: 35),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'John Mark Dela Cruz',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Text(
-                          'jmdelacruz@gmail.com',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: ColorPalette.greyLightText,
-                          ),
-                        ),
-                      ],
+                    child: AnimatedBuilder(
+                      animation: dpLocator<SessionProfile>(),
+                      builder: (context, _) {
+                        final profile = dpLocator<SessionProfile>();
+                        final name = profile.displayName;
+                        final email = profile.email ?? '';
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name.isEmpty ? 'Servana Provider' : name,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            if (email.isNotEmpty)
+                              Text(
+                                email,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: ColorPalette.greyLightText,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
                     ),
                   )
                 ],
@@ -146,7 +157,7 @@ class UserSettingsView extends StatelessWidget {
                 color: ColorPalette.greyLightText,
               ),
               onTap: () {
-                context.pushNamed(ProfileView.routeName, extra: {"": ''});
+                context.pushNamed(ProfileView.routeName);
               },
             ),
           ),
@@ -213,7 +224,11 @@ class UserSettingsView extends StatelessWidget {
 
           GestureDetector(
             onTap: () async {
-              await AuthSessionBootstrap.clear(dpLocator<AuthTokenHolder>());
+              await AuthSessionBootstrap.clear(
+                dpLocator<AuthTokenHolder>(),
+                dpLocator<SessionProfile>(),
+              );
+              dpLocator<JobCardsStore>().clear();
               if (context.mounted) {
                 context.goNamed(LoginView.routeName);
               }
