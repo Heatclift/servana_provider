@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -23,15 +25,29 @@ class _HomeViewState extends State<HomeScreen> {
 
   JobCardsStore get _store => dpLocator<JobCardsStore>();
 
+  // Auto-pull job cards while the user is on home so a freshly auto-assigned
+  // booking surfaces without requiring a manual pull-to-refresh. Stops when
+  // the screen is disposed (navigated away).
+  Timer? _autoRefreshTimer;
+  static const _autoRefreshInterval = Duration(seconds: 15);
+
   @override
   void initState() {
     super.initState();
     _store.addListener(_onStoreChange);
     WidgetsBinding.instance.addPostFrameCallback((_) => _store.load());
+    _autoRefreshTimer = Timer.periodic(
+      _autoRefreshInterval,
+      (_) {
+        if (!mounted) return;
+        _store.refresh();
+      },
+    );
   }
 
   @override
   void dispose() {
+    _autoRefreshTimer?.cancel();
     _store.removeListener(_onStoreChange);
     super.dispose();
   }

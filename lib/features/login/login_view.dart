@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,15 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
+  /// Dev-test coordinate near the seeded customer address (BGC area).
+  /// TODO: replace with real geolocation (geolocator on mobile / browser
+  /// geolocation on web) and an explicit "Go online" toggle. Hardcoding here
+  /// is what unblocks the auto-assign dry-run since the BE matches by
+  /// nearest worker location and the provider app has no other way to push
+  /// its location yet.
+  static const _devLocationLat = 14.5536;
+  static const _devLocationLng = 121.0221;
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
@@ -52,6 +63,14 @@ class _LoginViewState extends State<LoginView> {
       });
       await AuthSessionBootstrap.persist(dpLocator<AuthTokenHolder>().token);
       await AuthSessionBootstrap.persistProfile(dpLocator<SessionProfile>());
+
+      // Push the worker's location so the BE can match auto-assignments to
+      // this worker. Best-effort: a failure here must not block sign-in.
+      final uid = dpLocator<SessionProfile>().id;
+      if (uid != null && uid.isNotEmpty) {
+        unawaited(_pushWorkerLocation(api, uid));
+      }
+
       if (!mounted) return;
       showSnackBar(context, 'Signed in successfully.');
       context.goNamed(HomepageView.routeName);
@@ -68,6 +87,20 @@ class _LoginViewState extends State<LoginView> {
       }
     } finally {
       if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _pushWorkerLocation(ServanaApi api, String uid) async {
+    try {
+      await api.updateWorkerLocation({
+        'uid': uid,
+        'latitude': _devLocationLat,
+        'longitude': _devLocationLng,
+        'isOnline': true,
+      });
+    } catch (_) {
+      // Best-effort. We deliberately don't surface this — failing to push the
+      // location only impacts whether *this* worker wins proximity matching.
     }
   }
 
